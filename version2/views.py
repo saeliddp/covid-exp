@@ -8,11 +8,11 @@ from django.views.decorators.cache import cache_control
 
 num_search_results = 10
 # algorithms to be initially displayed on the left and right, respectively
-left_alg = "0gOriginal"
-right_alg = "0gAltered"
+left_alg = "google"
+right_alg = "altered"
 # algorithms to be displayed on left and right after 10 turns
-round_one_l = "0gOriginal"
-round_one_r = "0gAltered"
+round_one_l = "google"
+round_one_r = "altered"
 
 # maps algorithm names to lists of snippets
 alg_to_snippets = {
@@ -69,7 +69,7 @@ def instructions(request, respondent_id):
         return render(request, 'version2/instructions.html', context)
 
 def getAlgs(id):
-    if id <= 11 and not swap[id-1]:
+    if id <= 20 and not swap[id-1]:
         left_alg = round_one_l
         right_alg = round_one_r
     else:
@@ -128,7 +128,7 @@ def home(request, q_id, respondent_id):
     left_alg = getAlgs(q_id)[0]
     right_alg = getAlgs(q_id)[1]
     request.session.flush()
-    if q_id <= 11:
+    if q_id <= 20:
         context = {
             'left_snippets': alg_to_snippets[left_alg][q_id],
             'right_snippets': alg_to_snippets[right_alg][q_id],
