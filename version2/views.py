@@ -22,7 +22,8 @@ alg_to_snippets = {
 
 # whether or not to swap the left and right algorithms on a given turn
 swap = [False, True, True, False, True, True, True, False, False, False, False, False, True, True, False, False, True, False, True, True, False]
-# represents the query_id values corresponding to the order of data in snippet.pickle
+# represents the order in which queries will actually appear
+query_order = [6, 1, 16, 9, 7, 5, 17, 12, 2, 10, 19, 3, 8, 4, 20, 18, 15, 11, 13, 14] # randomly generated
 
 def get_ip_address(request):
     """ use requestobject to fetch client machine's IP Address """
@@ -98,7 +99,7 @@ def redir(request, q_id, respondent_id):
         
         if 'time_elapsed' in request.GET:
             response = Response(respondent=user,
-                                query=Query.objects.filter(query_id=id)[0],
+                                query=Query.objects.filter(query_id=query_order[id-1])[0],
                                 chosen_alg=Algorithm.objects.filter(name=choice)[0],
                                 unchosen_alg=Algorithm.objects.filter(name=not_choice)[0],
                                 time_elapsed=int(request.GET['time_elapsed']))
@@ -130,9 +131,9 @@ def home(request, q_id, respondent_id):
     request.session.flush()
     if q_id <= 20:
         context = {
-            'left_snippets': alg_to_snippets[left_alg][q_id],
-            'right_snippets': alg_to_snippets[right_alg][q_id],
-            'query_name': alg_to_snippets[right_alg][q_id][0][0],
+            'left_snippets': alg_to_snippets[left_alg][query_order[q_id-1]],
+            'right_snippets': alg_to_snippets[right_alg][query_order[q_id-1]],
+            'query_name': alg_to_snippets[right_alg][query_order[q_id-1]][0][0],
             'curr_qid': q_id + 1,
             'respondent_id': respondent_id
         }
