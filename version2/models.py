@@ -26,6 +26,7 @@ class Query(models.Model):
     # this id of the query in the txt files
     # there is no query with id 0
     query_id = models.PositiveSmallIntegerField(default=0)
+    num_fake = models.PositiveSmallIntegerField(default=0)
     def __str__(self):
         return self.query_name
     

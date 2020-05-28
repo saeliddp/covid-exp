@@ -28,7 +28,7 @@ def altered_results(filename):
             ranks[random.randint(0, 4)] = 90
             ranks[random.randint(5, 9)] = 91
         else:
-            ranks[random.randint(0, 9)] = 90
+            ranks[random.randint(0, 4)] = 90
         cr = 1
         for rank in ranks:
             line = str(curr_q) + "X" + " Q0 " + str(curr_q) + "00" + str(rank) + " " + str(cr) + " X g\n"
