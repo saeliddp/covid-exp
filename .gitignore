@@ -3,3 +3,10 @@
 
 # Database
 *.sqlite3
+
+# miscellaneous files
+topten.py
+results.txt
+topten_results.txt
+fake_news.txt
+addfake.py
