@@ -3,8 +3,9 @@ from django.http import HttpResponse
 from version2.extraction import *
 from django.shortcuts import redirect
 from version2.models import *
-import random
 from django.views.decorators.cache import cache_control
+
+import csv, random, datetime
 
 num_search_results = 10
 # algorithms to be initially displayed on the left and right, respectively
@@ -152,4 +153,25 @@ def thanks(request, respondent_id):
         return render(request, 'version2/code.html')
     else:
         return render(request, 'version2/thanks.html', context)
-    
+
+def exportUsers(request):
+    response = HttpResponse(content_type="text/csv")
+    writer = csv.writer(response)
+    writer.writerow(['mturk_id','age','gender','education','ip_addr','browser','date'])
+    for u in Respondent.objects.all().values_list('mturk_id', 'age', 'gender', 'education', 'ip_addr', 'browser', 'date'):
+        writer.writerow(u)
+    today = datetime.date.today()
+    filename = "users_" + today.strftime("%m_%d_%Y") + ".csv"
+    response['Content-Disposition'] = 'attachment; filename="' + filename + '"'
+    return response
+
+def exportResponses(request):
+    response = HttpResponse(content_type="text/csv")
+    writer = csv.writer(response)
+    writer.writerow(['mturk_id','chosen','unchosen','query','num_fake_results','time_elapsed','date'])
+    for r in Response.objects.all():
+        writer.writerow([r.respondent.mturk_id, r.chosen_alg.name, r.unchosen_alg.name, r.query.query_name, r.query.num_fake, r.time_elapsed, r.date])
+    today = datetime.date.today()
+    filename = "responses_" + today.strftime("%m_%d_%Y") + ".csv"
+    response['Content-Disposition'] = 'attachment; filename="' + filename + '"'
+    return response

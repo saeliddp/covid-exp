@@ -5,6 +5,8 @@ from . import views
 # update refreshes the home page and sends data to server
 urlpatterns = [
     path('', views.consent, name='version2-consent'),
+    path('export-users/', views.exportUsers, name='version2-export-users'),
+    path('export-responses/', views.exportResponses, name='version2-export-responses'),
     path('demographics/', views.demographics, name='version2-demographics'),
     path('instructions<int:respondent_id>/', views.instructions, name='version2-instructions'),
     path('home<int:q_id>/<int:respondent_id>/', views.home, name='version2-home'),
